@@ -35,6 +35,7 @@ import hudson.plugins.git.extensions.GitClientConflictException;
 import hudson.plugins.git.extensions.GitClientType;
 import hudson.plugins.git.extensions.GitSCMExtension;
 import hudson.plugins.git.extensions.GitSCMExtensionDescriptor;
+import hudson.plugins.git.extensions.impl.FetchCommandExt;
 import hudson.plugins.git.extensions.impl.AuthorInChangelog;
 import hudson.plugins.git.extensions.impl.BuildChooserSetting;
 import hudson.plugins.git.extensions.impl.ChangelogToBranch;
@@ -126,6 +127,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  * @author Andrew Bayer
  * @author Nicolas Deloof
  * @author Kohsuke Kawaguchi
+ * @author Nementon
  * ... and many others
  */
 public class GitSCM extends GitSCMBackwardCompatibility {
@@ -226,7 +228,7 @@ public class GitSCM extends GitSCMBackwardCompatibility {
         this.configVersion = 2L;
         this.gitTool = gitTool;
 
-        this.extensions = new DescribableList<>(Saveable.NOOP,Util.fixNull(extensions));
+        this.extensions = new DescribableList<>(Saveable.NOOP,new FetchCommandExt(), Util.fixNull(extensions));
 
         getBuildChooser(); // set the gitSCM field.
     }
@@ -871,7 +873,7 @@ public class GitSCM extends GitSCMBackwardCompatibility {
      * @throws InterruptedException when interrupted
      * @throws IOException on input or output error
      */
-    private void fetchFrom(GitClient git,
+    public void fetchFrom(GitClient git,
             TaskListener listener,
             RemoteConfig remoteRepository) throws InterruptedException, IOException {
 
