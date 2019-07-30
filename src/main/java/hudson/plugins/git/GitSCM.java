@@ -228,7 +228,8 @@ public class GitSCM extends GitSCMBackwardCompatibility {
         this.configVersion = 2L;
         this.gitTool = gitTool;
 
-        this.extensions = new DescribableList<>(Saveable.NOOP,new FetchCommandExt(), Util.fixNull(extensions));
+
+        this.extensions = new DescribableList<>(Saveable.NOOP, Util.fixNull(extensions));
 
         getBuildChooser(); // set the gitSCM field.
     }
@@ -873,7 +874,7 @@ public class GitSCM extends GitSCMBackwardCompatibility {
      * @throws InterruptedException when interrupted
      * @throws IOException on input or output error
      */
-    public void fetchFrom(GitClient git,
+    private void fetchFrom(GitClient git,
             TaskListener listener,
             RemoteConfig remoteRepository) throws InterruptedException, IOException {
 

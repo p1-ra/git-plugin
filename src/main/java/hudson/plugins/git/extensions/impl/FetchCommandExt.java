@@ -10,7 +10,11 @@ import hudson.plugins.git.extensions.GitSCMExtensionDescriptor;
 import java.io.IOException;
 import org.jenkinsci.plugins.gitclient.GitClient;
 import org.kohsuke.stapler.DataBoundConstructor;
-
+import org.eclipse.jgit.transport.RemoteConfig;
+import java.util.List;
+import hudson.util.DescribableList;
+import org.eclipse.jgit.transport.URIish;
+import org.jenkinsci.plugins.gitclient.FetchCommand;
 /**
  * Force a git fetch before git checkout.
  *
@@ -25,7 +29,7 @@ public class FetchCommandExt extends GitSCMExtension {
      * {@inheritDoc}
      */
     @Override
-    public void beforeCheckout(GitSCM scm, Run<?, ?> build, GitClient git, TaskListener listener) throws IOException, InterruptedException, GitException {
+    public void onCheckoutCompleted(GitSCM scm, Run<?, ?> build, GitClient git, TaskListener listener) throws IOException, InterruptedException, GitException {
         listener.getLogger().println("Exec git fetch command.");
 
         List<RemoteConfig> repos = scm.getParamExpandedRepos(build, listener);
@@ -35,11 +39,13 @@ public class FetchCommandExt extends GitSCMExtension {
 
         for (RemoteConfig remoteRepository : repos) {
             try {
-                scm.fetchFrom(git, listener, remoteRepository)
-
-            } catch (GitException ex) {
+	    	for (URIish url : remoteRepository.getURIs()) {
+			FetchCommand fetch = git.fetch_().from(url, remoteRepository.getFetchRefSpecs());
+			listener.getLogger().println("Fetch repository >>>>>>>> " + url);  
+			fetch.execute();
+	    	}
+            } catch (GitException|InterruptedException ex) {
                 ex.printStackTrace(listener.error("Error fetching remote repo '" + remoteRepository.getName() + "'"));
-                throw
             }
         }
     }
@@ -81,7 +87,7 @@ public class FetchCommandExt extends GitSCMExtension {
          */
         @Override
         public String getDisplayName() {
-            return "Exec Git fetch command before checkout";
+            return "Git fetch after checkout";
         }
     }
 }
