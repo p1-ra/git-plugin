@@ -15,6 +15,7 @@ import java.util.List;
 import hudson.util.DescribableList;
 import org.eclipse.jgit.transport.URIish;
 import org.jenkinsci.plugins.gitclient.FetchCommand;
+import java.util.ArrayList;
 /**
  * Force a git fetch before git checkout.
  *
@@ -40,8 +41,8 @@ public class FetchAllAfterCheckout extends GitSCMExtension {
         for (RemoteConfig remoteRepository : repos) {
             try {
 	    	for (URIish url : remoteRepository.getURIs()) {
-			FetchCommand fetch = git.fetch_().from(url, remoteRepository.getFetchRefSpecs());
-			listener.getLogger().println("Fetch repository >>>>>>>> " + url);  
+			listener.getLogger().println("Fetch all repository >>>>>>>> " + url);  
+			FetchCommand fetch = git.fetch_().from(url, new ArrayList<>()).all();
 			fetch.execute();
 	    	}
             } catch (GitException|InterruptedException ex) {
