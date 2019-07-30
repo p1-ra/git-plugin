@@ -26,22 +26,22 @@
 package jenkins.plugins.git.traits;
 
 import hudson.Extension;
-import hudson.plugins.git.extensions.impl.FetchCommandExt;
+import hudson.plugins.git.extensions.impl.FetchAllAfterCheckout;
 import jenkins.scm.api.trait.SCMSourceTrait;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 /**
- * Exposes {@link FetchCommandExt} as a {@link SCMSourceTrait}.
+ * Exposes {@link FetchAllAfterCheckout} as a {@link SCMSourceTrait}.
  *
  * @since 3.4.0
  */
-public class FetchCommandExtTrait extends GitSCMExtensionTrait<FetchCommandExt> {
+public class FetchAllAfterCheckoutTrait extends GitSCMExtensionTrait<FetchAllAfterCheckout> {
     /**
      * Stapler constructor.
      */
     @DataBoundConstructor
-    public FetchCommandExtTrait() {
-        super(new FetchCommandExt());
+    public FetchAllAfterCheckoutTrait() {
+        super(new FetchAllAfterCheckout());
     }
 
     /**

@@ -20,9 +20,9 @@ import org.jenkinsci.plugins.gitclient.FetchCommand;
  *
  * @author Nementon
  */
-public class FetchCommandExt extends GitSCMExtension {
+public class FetchAllAfterCheckout extends GitSCMExtension {
     @DataBoundConstructor
-    public FetchCommandExt() {
+    public FetchAllAfterCheckout() {
     }
 
     /**
@@ -61,7 +61,7 @@ public class FetchCommandExt extends GitSCMExtension {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        return o instanceof FetchCommandExt;
+        return o instanceof FetchAllAfterCheckout;
     }
 
     /**
@@ -69,7 +69,7 @@ public class FetchCommandExt extends GitSCMExtension {
      */
     @Override
     public int hashCode() {
-        return FetchCommandExt.class.hashCode();
+        return FetchAllAfterCheckout.class.hashCode();
     }
 
     /**
@@ -77,7 +77,7 @@ public class FetchCommandExt extends GitSCMExtension {
      */
     @Override
     public String toString() {
-        return "FetchCommandExt{}";
+        return "FetchAllAfterCheckout{}";
     }
 
     @Extension
